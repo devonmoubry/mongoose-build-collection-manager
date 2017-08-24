@@ -1,3 +1,7 @@
+const express = require('express');
+const mustacheExpress = require('mustache-express');
+const session = require('express-session');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Movie = require('./models/movie.js');
 const Person = require('./models/person.js');
@@ -5,11 +9,28 @@ mongoose.Promise = require('bluebird');
 // Replace "test" with your database name.
 mongoose.connect('mongodb://localhost:27017/mongoose-build-a-schema');
 
+const app = express();
+app.engine('mustache', mustacheExpress()); // Register '.mustache' extension with The Mustache Express
+app.set('views', './views');
+app.set('view engine', 'mustache');
+app.use(bodyParser.urlencoded({ extended: false }));
+
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   // we're connected!
   console.log('we are connected');
+});
+
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+}));
+
+app.use(function(err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
 // const jakeHoffman = new Person({
@@ -55,11 +76,31 @@ db.once('open', function() {
 //     console.log('error ' + JSON.stringify(error));
 //   })
 
-// app.get('/', function (req,res) {
-//   Movie.find()
-// .then(function (movies) {
-//   res.render('index', {data: movies})
-// })})
+app.get('/', function (req,res) {
+  Movie.find()
+  .then(function (movies) {
+    res.render('index', {data: movies})
+  })
+  Person.find()
+  .then(function (people) {
+    console.log(people);
+  })
+})
+
+// GET method route
+// app.get('/', function (req, res) {
+//
+//   // No query passed in means "find everything"
+//   Person.find({name: "Devon Aoki"})
+//   .then(function (people) {
+//     res.status(200).send(people)
+//     console.log(people);
+//   })
+// })
+
+app.listen(3000, function () {
+  console.log('🍸  Party at http://localhost:3000...');
+});
 
 process.on('SIGINT', function() {
   console.log("\nshutting down");

@@ -15,6 +15,6 @@ Build Steps:
 - `gitignore node`
 - `npm init --yes`
 - `npm install`
-- `npm install express mongodb mongoose@4.10.8 bluebird --save`
+- `npm install express mustache mustache-express express-session body-parser mongodb mongoose@4.10.8 bluebird --save`
 - `touch README.md`
 - `touch app.js`
