@@ -87,6 +87,10 @@ app.get('/', function (req,res) {
   })
 })
 
+app.get('/movies/new', function (req, res) {
+  res.render('movies/new');
+})
+
 // GET method route
 // app.get('/', function (req, res) {
 //
@@ -98,6 +102,19 @@ app.get('/', function (req,res) {
 //   })
 // })
 
+app.post('/movies/create', function (req, res) {
+  console.log(req.body.title);
+  console.log(req.body.year);
+  Movie.create({
+    title: req.body.title,
+    year: req.body.year
+  })
+    .then(function (movie) {
+      res.redirect('/movies/' + movie._id)
+    }).catch(function (error) {
+      console.log('error ' + JSON.stringify(error));
+    })
+})
 app.listen(3000, function () {
   console.log('🍸  Party at http://localhost:3000...');
 });

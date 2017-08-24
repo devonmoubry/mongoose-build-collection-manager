@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>New Movie - MovieDB</title>
+  </head>
+  <body>
+    <h1>New Movie</h1>
+    <form class="newMovie" action="/movies/create" method="post">
+      <label for="title">Movie Title:</label>
+      <input id="title" type="text" name="title" value="">
+      <label for="year">Year Released:</label>
+      <input id="year" type="text" name="year" value="">
+      <input type="submit" name="createMovie" value="create">
+    </form>
+
+  </body>
+</html>
