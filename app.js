@@ -115,6 +115,15 @@ app.post('/movies/create', function (req, res) {
       console.log('error ' + JSON.stringify(error));
     })
 })
+
+app.get('/movies/:id', function (req, res) {
+  Movie.find({_id: req.params.id})
+  .then(function (movie) {
+    res.render('movies/show', {movie: movie})
+  })
+  console.log(req.params.id);
+})
+
 app.listen(3000, function () {
   console.log('🍸  Party at http://localhost:3000...');
 });
